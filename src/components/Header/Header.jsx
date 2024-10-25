@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col, Layout, Space } from 'antd';
 import { LogoutOutlined, MailOutlined } from '@ant-design/icons';
 import { ReactComponent as Img } from '../../assets/svgs/user.svg';
 import Dropdown from 'antd/es/dropdown/dropdown';
 import { userInfoLocal } from '../../services/local.service';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfo } from '../../redux/userSlice';
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.userSlice);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -30,7 +31,7 @@ function Header() {
   ];
 
   return (
-    <Layout.Header className="bg-emerald-600 text-white w-full h-auto fixed top-0">
+    <Layout.Header className="bg-emerald-600 text-white w-full h-auto fixed top-0 z-40">
       <Row align="middle">
         <Col flex={2} className="text-start">
           Logo Project
@@ -38,7 +39,7 @@ function Header() {
         <Col>
           55 <MailOutlined />
         </Col>
-        <Col className="text-right ml-6">Welcome John Cena</Col>
+        <Col className="text-right ml-6">Welcome {userInfo.userName}</Col>
         <Col>
           <div className="flex justify-center items-center ml-3">
             <Dropdown menu={{ items }}>
