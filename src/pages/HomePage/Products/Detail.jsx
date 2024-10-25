@@ -1,7 +1,18 @@
 import React from 'react';
-import { Button, Col, Drawer, Image, InputNumber, Row, Space, Tag } from 'antd';
+import {
+  Button,
+  Col,
+  Drawer,
+  Image,
+  InputNumber,
+  List,
+  Row,
+  Space,
+  Tag,
+} from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Typography } from 'antd';
+import Comment from '../../../components/Comment/Comment';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -18,11 +29,8 @@ function Detail({ product, open, onClose }) {
         <Col span={12}>
           <Space direction="vertical">
             <Title level={2}>{product.name}</Title>
-
             <Tag className="text-lg text-emerald-600">${product.price}</Tag>
-
             <Text className="text-lg">Sku: {product.sku}</Text>
-
             <InputNumber
               min={1}
               max={100000}
@@ -36,6 +44,8 @@ function Detail({ product, open, onClose }) {
           </Space>
         </Col>
       </Row>
+
+      <Comment />
     </Drawer>
   );
 }
