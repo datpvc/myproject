@@ -2,10 +2,10 @@ import React from 'react';
 import {
   Button,
   Col,
+  Divider,
   Drawer,
   Image,
   InputNumber,
-  List,
   Row,
   Space,
   Tag,
@@ -44,8 +44,8 @@ function Detail({ product, open, onClose }) {
           </Space>
         </Col>
       </Row>
-
-      <Comment />
+      <Divider>Comments</Divider>
+      <Comment comments={product.comments} />
     </Drawer>
   );
 }
