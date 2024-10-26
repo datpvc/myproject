@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
-import { Row, Col, Layout, Space } from 'antd';
-import { LogoutOutlined, MailOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Row, Col, Layout, Space, Button } from 'antd';
+import { LogoutOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { ReactComponent as Img } from '../../assets/svgs/user.svg';
 import Dropdown from 'antd/es/dropdown/dropdown';
 import { userInfoLocal } from '../../services/local.service';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfo } from '../../redux/userSlice';
+import logoAnimation from '../../assets/animate/logo.json';
+import Lottie from 'lottie-react';
 
 function Header() {
   const navigate = useNavigate();
@@ -25,7 +27,9 @@ function Header() {
   const items = [
     {
       key: '1',
-      label: <a onClick={handleLogout}>Logout</a>,
+      label: (
+        <a onClick={handleLogout}>{userInfo.userName ? 'Logout' : 'Login'} </a>
+      ),
       icon: <LogoutOutlined />,
     },
   ];
@@ -33,13 +37,25 @@ function Header() {
   return (
     <Layout.Header className="bg-emerald-600 text-white w-full h-auto fixed top-0 z-40">
       <Row align="middle">
-        <Col flex={2} className="text-start">
-          Logo Project
+        <Col className="text-start w-16 h-16">
+          <a className="w-full h-full" href="/">
+            <Lottie animationData={logoAnimation} loop={true} />
+          </a>
         </Col>
+        <Col flex={1} />
         <Col>
-          55 <MailOutlined />
+          <Button
+            type="text"
+            className="bg-emerald-600 text-white border-none"
+            onClick={() => {}}
+            icon={<ShoppingCartOutlined />}
+          >
+            55
+          </Button>
         </Col>
-        <Col className="text-right ml-6">Welcome {userInfo.userName}</Col>
+        <Col className="text-right ml-6">
+          {userInfo.userName ? `Welcome ${userInfo.userName}` : ''}
+        </Col>
         <Col>
           <div className="flex justify-center items-center ml-3">
             <Dropdown menu={{ items }}>

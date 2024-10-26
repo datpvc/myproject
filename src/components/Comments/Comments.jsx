@@ -5,13 +5,23 @@ import { productServices } from '../../services/product.service';
 import { useSelector } from 'react-redux';
 import { Notification } from '../../utils/notification';
 
-const Editor = ({ onChange, onSubmit, value }) => (
+const Editor = ({ onChange, onSubmit, onKeyDown, value, loading }) => (
   <div>
     <Form.Item className="mb-2">
-      <Input.TextArea rows={2} onChange={onChange} value={value} />
+      <Input.TextArea
+        rows={2}
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+      />
     </Form.Item>
     <Form.Item>
-      <Button htmlType="submit" onClick={onSubmit} type="primary">
+      <Button
+        htmlType="submit"
+        onClick={onSubmit}
+        type="primary"
+        loading={loading}
+      >
         Add Comment
       </Button>
     </Form.Item>
@@ -22,18 +32,31 @@ function Comments({ product }) {
   const [value, setValue] = useState('');
   const [comments, setComments] = useState([]);
   const { userInfo } = useSelector((state) => state.userSlice);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+  const [loadingAdd, setLoadingAdd] = useState(false);
 
   useEffect(() => {
     setComments(product.comments ?? []);
   }, [product.id]);
+
+  const onKeyDown = (e) => {
+    console.log('keyCode: ', e.keyCode);
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
 
   const handleChange = (e) => {
     e.preventDefault();
     setValue(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    if (!userInfo.account) {
+      Notification('error', 'You need to log in');
+      return;
+    }
     if (!value) return;
     const _comments = [...comments];
     _comments.push({
@@ -41,7 +64,7 @@ function Comments({ product }) {
       userName: userInfo.userName,
       value: value,
     });
-
+    setLoadingAdd(true);
     productServices
       .update({
         ...product,
@@ -54,11 +77,19 @@ function Comments({ product }) {
       })
       .catch((err) => {
         Notification('error', 'Comment failed');
+      })
+      .finally(() => {
+        setLoadingAdd(false);
       });
   };
 
   const handleDelete = (comment) => {
+    if (!userInfo.account) {
+      Notification('error', 'You need to log in');
+      return;
+    }
     let _comments = comments.filter((_comment) => _comment.id !== comment.id);
+    setLoadingDelete(true);
     productServices
       .update({ ...product, comments: _comments })
       .then((res) => {
@@ -67,6 +98,9 @@ function Comments({ product }) {
       })
       .catch(() => {
         Notification('error', 'Comment deletion failed');
+      })
+      .finally(() => {
+        setLoadingDelete(false);
       });
   };
 
@@ -80,7 +114,6 @@ function Comments({ product }) {
               <Popconfirm
                 title="Delete the comment"
                 description="Are you sure to delete this comment?"
-                // onCancel={cancel}
                 okText="Yes"
                 cancelText="No"
                 onConfirm={() => {
@@ -88,6 +121,7 @@ function Comments({ product }) {
                 }}
               >
                 <Button
+                  loading={loadingDelete}
                   type="primary"
                   danger
                   shape="circle"
@@ -110,7 +144,13 @@ function Comments({ product }) {
         )}
       />
 
-      <Editor onChange={handleChange} onSubmit={handleSubmit} value={value} />
+      <Editor
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        onKeyDown={onKeyDown}
+        loading={loadingAdd}
+        value={value}
+      />
     </>
   );
 }

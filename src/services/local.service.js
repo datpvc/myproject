@@ -1,4 +1,4 @@
-const USER_INFO = "USER_INFO";
+const USER_INFO = 'USER_INFO';
 
 export const userInfoLocal = {
   set: (userData) => {
@@ -10,7 +10,7 @@ export const userInfoLocal = {
     if (json) {
       return JSON.parse(json);
     } else {
-      return null;
+      return {};
     }
   },
   remove: () => {
