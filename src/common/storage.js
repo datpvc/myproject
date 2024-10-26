@@ -10,13 +10,28 @@ export const accounts = [
     userName: 'Tran Phuc',
   },
   {
-    account: 'user2@gmail.com',
+    account: 'chien@gmail.com',
     password: '123456',
-    userName: 'Nông Thị Thương',
+    userName: 'Van Chien',
   },
   {
-    account: 'user3@gmail.com',
+    account: 'duc@gmail.com',
     password: '123456',
-    userName: 'Lưu Thành Công',
+    userName: 'Minh Duc',
+  },
+  {
+    account: 'tung@gmail.com',
+    password: '123456',
+    userName: 'Thanh Tung',
+  },
+  {
+    account: 'viet@gmail.com',
+    password: '123456',
+    userName: 'Quoc Viet',
+  },
+  {
+    account: 'trieu@gmail.com',
+    password: '123456',
+    userName: 'Van Trieu',
   },
 ];

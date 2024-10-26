@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Form, Button, List, Input } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import { productServices } from '../../services/product.service';
 import { useSelector } from 'react-redux';
 import { Notification } from '../../utils/notification';
@@ -20,8 +20,15 @@ const Editor = ({ onChange, onSubmit, value }) => (
 
 function Comments({ product }) {
   const [value, setValue] = useState('');
-  const [comments, setComments] = useState(product.comments);
+  const [comments, setComments] = useState([]);
   const { userInfo } = useSelector((state) => state.userSlice);
+
+  useEffect(() => {
+    if (product.comments) setComments(product.comments);
+    return () => {
+      setComments([]);
+    };
+  }, [product.id]);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -46,11 +53,10 @@ function Comments({ product }) {
       .then((res) => {
         setComments(res.data.comments);
         setValue('');
-        Notification('success', `Welcome`);
+        Notification('success', 'Comment successful');
       })
       .catch((err) => {
-        Notification('error', 'An account failed to log on!');
-        console.log('err: ', err);
+        Notification('error', 'Comment failed');
       });
   };
 
@@ -60,10 +66,10 @@ function Comments({ product }) {
       .update({ ...product, comments: _comments })
       .then((res) => {
         setComments(res.data.comments);
-        Notification('success', `Welcome`);
+        Notification('success', 'Comment deleted successfully');
       })
       .catch(() => {
-        Notification('error', 'An account failed to log on!');
+        Notification('error', 'Comment deletion failed');
       });
   };
 
@@ -74,12 +80,6 @@ function Comments({ product }) {
         renderItem={(comment, index) => (
           <List.Item
             actions={[
-              // <Button
-              //   type="primary"
-              //   shape="circle"
-              //   icon={<EditOutlined />}
-              //   onClick={() => {}}
-              // />,
               <Button
                 type="primary"
                 danger
