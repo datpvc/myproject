@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Col,
@@ -13,10 +13,26 @@ import {
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Typography } from 'antd';
 import Comments from '../../../components/Comments/Comments';
+import { productServices } from '../../../services/product.service';
 
 const { Title, Paragraph, Text } = Typography;
 
 function Detail({ product, open, onClose }) {
+  const [detailProduct, setDetailProduct] = useState({});
+
+  useEffect(() => {
+    if (product.id) {
+      productServices
+        .detail(product.id)
+        .then((res) => {
+          setDetailProduct(res.data);
+        })
+        .catch((err) => {
+          console.log('err: ', err);
+        });
+    }
+  }, [product.id]);
+
   const onChange = (value) => {
     console.log('changed', value);
   };
@@ -52,7 +68,7 @@ function Detail({ product, open, onClose }) {
         </Col>
       </Row>
       <Divider>Comments</Divider>
-      <Comments product={product} />
+      <Comments product={detailProduct} />
     </Drawer>
   );
 }

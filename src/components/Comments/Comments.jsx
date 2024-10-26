@@ -24,10 +24,7 @@ function Comments({ product }) {
   const { userInfo } = useSelector((state) => state.userSlice);
 
   useEffect(() => {
-    if (product.comments) setComments(product.comments);
-    return () => {
-      setComments([]);
-    };
+    setComments(product.comments ?? []);
   }, [product.id]);
 
   const handleChange = (e) => {
