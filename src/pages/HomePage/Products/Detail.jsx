@@ -12,7 +12,7 @@ import {
 } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Typography } from 'antd';
-import Comment from '../../../components/Comment/Comment';
+import Comments from '../../../components/Comments/Comments';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -20,6 +20,9 @@ function Detail({ product, open, onClose }) {
   const onChange = (value) => {
     console.log('changed', value);
   };
+
+  const addToCart = () => {};
+
   return (
     <Drawer title={product.name} width={720} onClose={onClose} open={open}>
       <Row gutter={5}>
@@ -38,14 +41,18 @@ function Detail({ product, open, onClose }) {
               onChange={onChange}
             />
             <Paragraph>{product.description}</Paragraph>
-            <Button type="primary" icon={<ShoppingCartOutlined />}>
+            <Button
+              type="primary"
+              onClick={addToCart}
+              icon={<ShoppingCartOutlined />}
+            >
               ADD TO CART
             </Button>
           </Space>
         </Col>
       </Row>
       <Divider>Comments</Divider>
-      <Comment comments={product.comments} />
+      <Comments product={product} />
     </Drawer>
   );
 }

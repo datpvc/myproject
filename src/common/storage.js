@@ -5,7 +5,7 @@ export const accounts = [
     userName: 'Cong Dat',
   },
   {
-    account: 'user1@gmail.com',
+    account: 'phuc@gmail.com',
     password: '123456',
     userName: 'Tran Phuc',
   },

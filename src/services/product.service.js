@@ -4,4 +4,7 @@ export const productServices = {
   getAll: () => {
     return https.get('products');
   },
+  update: (params) => {
+    return https.put(`products/${params.id}`, params);
+  },
 };
