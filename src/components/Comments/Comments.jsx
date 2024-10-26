@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Form, Button, List, Input } from 'antd';
+import { Avatar, Form, Button, List, Input, Popconfirm } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { productServices } from '../../services/product.service';
 import { useSelector } from 'react-redux';
@@ -77,15 +77,23 @@ function Comments({ product }) {
         renderItem={(comment, index) => (
           <List.Item
             actions={[
-              <Button
-                type="primary"
-                danger
-                shape="circle"
-                icon={<DeleteOutlined />}
-                onClick={() => {
+              <Popconfirm
+                title="Delete the comment"
+                description="Are you sure to delete this comment?"
+                // onCancel={cancel}
+                okText="Yes"
+                cancelText="No"
+                onConfirm={() => {
                   handleDelete(comment);
                 }}
-              />,
+              >
+                <Button
+                  type="primary"
+                  danger
+                  shape="circle"
+                  icon={<DeleteOutlined />}
+                />
+              </Popconfirm>,
             ]}
           >
             <List.Item.Meta

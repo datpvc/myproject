@@ -19,9 +19,11 @@ const { Title, Paragraph, Text } = Typography;
 
 function Detail({ product, open, onClose }) {
   const [detailProduct, setDetailProduct] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (product.id) {
+      setLoading(true);
       productServices
         .detail(product.id)
         .then((res) => {
@@ -29,6 +31,9 @@ function Detail({ product, open, onClose }) {
         })
         .catch((err) => {
           console.log('err: ', err);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   }, [product.id]);
@@ -40,7 +45,13 @@ function Detail({ product, open, onClose }) {
   const addToCart = () => {};
 
   return (
-    <Drawer title={product.name} width={720} onClose={onClose} open={open}>
+    <Drawer
+      title={product.name}
+      width={720}
+      onClose={onClose}
+      open={open}
+      loading={loading}
+    >
       <Row gutter={5}>
         <Col span={12}>
           <Image width="100%" height="100%" src={product.image} />
