@@ -92,6 +92,7 @@ function Comments({ product }) {
             ]}
           >
             <List.Item.Meta
+              key={comment.id}
               avatar={
                 <Avatar
                   src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
