@@ -15,6 +15,7 @@ import { Notification } from '../../utils/notification';
 
 function Cart({ open, onClose }) {
   const { cart, totalPrice } = useSelector((state) => state.addToCartSlice);
+  const { userInfo } = useSelector((state) => state.userSlice);
 
   const dispatch = useDispatch();
 
@@ -45,7 +46,9 @@ function Cart({ open, onClose }) {
     handleClear(true);
     Notification(
       'success',
-      `You have successfully paid: $${totalPrice.toFixed(2)}`
+      `Thanks ${
+        userInfo.userName
+      } have successfully paid: $${totalPrice.toFixed(2)}`
     );
   };
 

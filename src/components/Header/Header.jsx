@@ -11,6 +11,7 @@ import { setUserInfo } from '../../redux/userSlice';
 import logoAnimation from '../../assets/animate/logo.json';
 import Lottie from 'lottie-react';
 import Cart from '../Cart/Cart';
+import { Notification } from '../../utils/notification';
 
 function Header() {
   const navigate = useNavigate();
@@ -20,6 +21,10 @@ function Header() {
   const [openCart, setOpenCart] = useState(false);
 
   const onOpenCart = () => {
+    if (!userInfo.account) {
+      Notification('error', 'You need to log in');
+      return;
+    }
     setOpenCart(true);
   };
 

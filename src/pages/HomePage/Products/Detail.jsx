@@ -14,7 +14,7 @@ import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Typography } from 'antd';
 import Comments from '../../../components/Comments/Comments';
 import { productServices } from '../../../services/product.service';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { onAdd } from '../../../redux/addToCartSlice';
 import { CartItem } from '../../../models/CartItem';
 import { Notification } from '../../../utils/notification';
@@ -25,6 +25,7 @@ function Detail({ product, open, onClose }) {
   const [detailProduct, setDetailProduct] = useState({});
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const { userInfo } = useSelector((state) => state.userSlice);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -50,6 +51,10 @@ function Detail({ product, open, onClose }) {
   };
 
   const addToCart = (product) => {
+    if (!userInfo.account) {
+      Notification('error', 'You need to log in');
+      return;
+    }
     const cartItem = new CartItem(product, quantity);
     dispatch(onAdd({ ...cartItem }));
     Notification(
