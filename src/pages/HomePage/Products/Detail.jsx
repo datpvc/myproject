@@ -14,16 +14,23 @@ import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Typography } from 'antd';
 import Comments from '../../../components/Comments/Comments';
 import { productServices } from '../../../services/product.service';
+import { useDispatch } from 'react-redux';
+import { onAdd } from '../../../redux/addToCartSlice';
+import { CartItem } from '../../../models/CartItem';
+import { Notification } from '../../../utils/notification';
 
 const { Title, Paragraph, Text } = Typography;
 
 function Detail({ product, open, onClose }) {
   const [detailProduct, setDetailProduct] = useState({});
   const [loading, setLoading] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (product.id) {
       setLoading(true);
+      setQuantity(1);
       productServices
         .detail(product.id)
         .then((res) => {
@@ -39,10 +46,17 @@ function Detail({ product, open, onClose }) {
   }, [product.id]);
 
   const onChange = (value) => {
-    console.log('changed', value);
+    setQuantity(value);
   };
 
-  const addToCart = () => {};
+  const addToCart = (product) => {
+    const cartItem = new CartItem(product, quantity);
+    dispatch(onAdd({ ...cartItem }));
+    Notification(
+      'success',
+      `Successfully added ${product.name} to Shopping list`
+    );
+  };
 
   return (
     <Drawer
@@ -70,7 +84,9 @@ function Detail({ product, open, onClose }) {
             <Paragraph>{product.description}</Paragraph>
             <Button
               type="primary"
-              onClick={addToCart}
+              onClick={() => {
+                addToCart(product);
+              }}
               icon={<ShoppingCartOutlined />}
             >
               ADD TO CART

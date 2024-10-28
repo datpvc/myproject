@@ -40,7 +40,6 @@ function Comments({ product }) {
   }, [product.id]);
 
   const onKeyDown = (e) => {
-    console.log('keyCode: ', e.keyCode);
     if (e.keyCode === 13) {
       e.preventDefault();
       handleSubmit();
@@ -137,7 +136,7 @@ function Comments({ product }) {
                   src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
                 />
               }
-              title={<a href="https://ant.design">{comment.userName}</a>}
+              title={<a href="#">{comment.userName}</a>}
               description={comment.value}
             />
           </List.Item>
