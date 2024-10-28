@@ -6,6 +6,7 @@ class CartItem {
       name: product.name,
       price: product.price,
       image: product.image,
+      sku: product.sku,
     };
     this.totalPriceItem = this.getTotalPriceItem();
   }

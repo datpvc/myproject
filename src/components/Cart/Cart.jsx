@@ -43,13 +43,16 @@ function Cart({ open, onClose }) {
     }
     onClose();
     handleClear(true);
-    Notification('success', `You have successfully paid`);
+    Notification(
+      'success',
+      `You have successfully paid: $${totalPrice.toFixed(2)}`
+    );
   };
 
   return (
     <Drawer
-      title="Shopping list"
-      width={'calc(100vw - 100px)'}
+      title="Shopping List"
+      width={'calc(100vw - 300px)'}
       onClose={onClose}
       open={open}
     >
@@ -114,8 +117,18 @@ function Cart({ open, onClose }) {
             <List.Item.Meta
               key={cartItem.product.id}
               avatar={<Avatar src={cartItem.product.image} />}
-              title={<a href="#">{cartItem.product.name}</a>}
+              title={
+                <div>
+                  <a className="block text-sm" href="#">
+                    {cartItem.product.name}
+                  </a>
+                  <span className="text-xs block">
+                    Sku: {cartItem.product.sku}
+                  </span>
+                </div>
+              }
             />
+            <b className="mr-16">${cartItem.product.price}</b>
             <InputNumber
               min={1}
               max={100000}
